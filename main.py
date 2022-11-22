@@ -1,7 +1,6 @@
 from typing import List, Dict
 from time import sleep
 from pathlib import Path
-
 from functions.helpers import Friend
 
 
@@ -60,20 +59,19 @@ def exhibt_friend() -> None:
 
         with open('LISTA_VIP.txt', 'r') as archive:
 
-            identifier: int = int(input('\nPor favor digite o identificador do convidado que você quera exibir. '))
-            list_vip = archive.readlines()
-
-            for line in list_vip:
+            identifier: str = input('\nPor favor digite o identificador do convidado que você quera exibir. ')
+            
+            for line in archive:
                 if line[0] == identifier:
                     print(line)
                     sleep(2)
                     menu()
-                else:
-                    print('Não existe convidado com este identificador')
-                    sleep(2)
-                    menu()
+            else:
+                print('\nEste usuário não existe ou foi removido da lista.')
+                sleep(2)
+                menu()
     else:
-        print('Este usuário não existe ou foi removido da lista.')
+        print('A lista vip ainda não existe.')
         sleep(2)
         menu()
 
@@ -103,27 +101,46 @@ def change_friend() -> None:
 
     if arch.is_file():
 
-        with open('LISTA_VIP.txt', 'a') as archive:
+        with open('LISTA_VIP.txt', 'a+') as archive:
 
-            identifier: int = int(input('Por favor digite o identificador do convidado que você quera exibir: '))
+            identifier: str = str(input('Por favor digite o identificador do convidado que você quera exibir: '))
 
             new_name: str = input('Digite o nome do novo convidado para troca: ')
             new_cpf: str = input('Digite o CPF do novo convidado: (ex. 111.111.111-11). ')
 
             for line in archive:
-                if line == identifier:
-                    line_splited = linhe.rsplit(' ')
-                    
-                    print(line_splited)
+                if line[0] == identifier:
+                    line = linhe.rsplit(' ')
+                    line[3] = new_name
+                    line[-1] = new_cpf
                     sleep(2)
                     menu()
+                else:
+                    print('Este usuário não existe ou foi removido da lista.')
+                    sleep(2)
+                    menu()
+
     else:
         print('Ainda não existe lista vip')
         sleep(2)
         menu()
 
 def remove_friend() -> None:
-    pass
+
+    arch = Path("/home/bruna/Development/projeot_crud/LISTA_VIP.txt")
+
+    if arch.is_file():
+
+        with open('LISTA_VIP.txt', 'r') as archive:
+            lines = archive.readlines()
+            identifier: int = int(input('Por favor digite o identificador do convidado que você quera exibir: '))
+            for index, i in enumerate(lines):
+                
+
+    else:
+        print('Ainda não existe lista vip')
+        sleep(2)
+        menu()
 
 
 if __name__ == '__main__':
