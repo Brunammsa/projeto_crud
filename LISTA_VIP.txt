@@ -1,3 +1,0 @@
-1 |  Nome: bruna - CPF: 123
-2 |  Nome: vanessa - CPF: 456
-1 |  Nome: bruno - CPF: 789
