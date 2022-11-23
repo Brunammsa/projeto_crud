@@ -27,4 +27,4 @@ class Friend:
         self.__cpf = cpf
 
     def __str__(self) -> str:
-        return f'Nome: {self.name} - CPF: {self.cpf}'
+        return f'Nome: {self.name},  CPF: {self.cpf}'

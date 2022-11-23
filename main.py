@@ -1,8 +1,13 @@
 from time import sleep
 from functions.helpers import Friend
+from pathlib import Path
 
-friends_dict: dict = {}
 friends_list: list = []
+arch = Path("/home/bruna/Development/projeot_crud/LISTA_VIP.txt")
+friend_class: Friend = Friend(name, cpf)
+friend: dict = {'Identificador': friend_class.identifier, 'Convidado': str(friend_class)}
+
+
 
 def main() -> None:
     menu()
@@ -41,77 +46,62 @@ def add_friend() -> None:
     name: str = input('Informe o nome do convidado: ')
     cpf: str = input('Informe o CPF do convidado. (ex. 000.000.000-00): ')
 
-    friend_class: Friend = Friend(name, cpf)
-    friends_dict = {friend_class.identifier: str(friend_class)}
-    friends_list.append(friends_dict)
+    friends_list.append(friend)
 
     with open('LISTA_VIP.txt', 'a') as archive:
-        archive.write(friends_dict)
+        archive.write(f'{friend["Identificador"]} | {friend["Convidado"]} \n')
 
     print(f'O convidado(a) {friend_class.name} com adicionado(a) com sucesso!')
-    sleep(2)
+    sleep(1)
     menu()
 
 def exhibt_friend() -> None:
 
-    if friends_list:
-        identifier: int = int(input('\nPor favor digite o identificador do convidado que você quera exibir. '))
+    if arch.is_file():
+        identifier: int = input('\nPor favor digite o identificador do convidado que você quera exibir. ')
 
-        for friend in friends_list:
-            if friend[0] == identifier:
-                print(friend)
-        else:
-            print('\nEste usuário não existe ou foi removido da lista.')
-            sleep(2)
+        with open('LISTA_VIP.txt', 'r') as archive:
+            for line in archive:
+                if line[0] == identifier:
+                    print(line)
+                    sleep(1)
+                    menu()
+            else:
+                print('\nEste usuário não existe ou foi removido da lista.')
+                sleep(2)
+                menu()
+    else:
+        print('A lista vip ainda não existe.')
+        sleep(2)
+        menu()
+
+def list_vip() -> None:
+    if arch.is_file():
+        with open('LISTA_VIP.txt', 'r') as archive:
+            for line in archive:
+                print(line)
+                print('~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+                sleep(1)
+            sleep(1)
             menu()
     else:
         print('A lista vip ainda não existe.')
         sleep(2)
         menu()
 
-
-def list_vip() -> None:
-
-    if friends_list:   
-        for friend in friends_list:
-            print('_____________________________________________')
-            print(friend)
-            sleep(1)
-        print('\n')
-        sleep(1)
-        menu()
-    else:
-        print('Ainda não existe uma lista VIP')
-        sleep(2)
-        menu()
-    
 def change_friend() -> None:
 
-    if arch.is_file():
+    identifier: int = input('\nPor favor digite o identificador do convidado que você quera exibir. ')
 
-        with open('LISTA_VIP.txt', 'a+') as archive:
+    name: str = input('Informe o nome atualizado do convidado: ')
+    cpf: str = input('Informe o CPF atualizado do convidado. (ex. 000.000.000-00): ')
 
-            identifier: str = str(input('Por favor digite o identificador do convidado que você quera exibir: '))
 
-            new_name: str = input('Digite o nome do novo convidado para troca: ')
-            new_cpf: str = input('Digite o CPF do novo convidado: (ex. 111.111.111-11). ')
+    for f in friends_list:
+        if f['Identificador'] == identifier:
+            f.update({'Convidado': friend_class})
 
-            for line in archive:
-                if line[0] == identifier:
-                    line = linhe.rsplit(' ')
-                    line[3] = new_name
-                    line[-1] = new_cpf
-                    sleep(2)
-                    menu()
-                else:
-                    print('Este usuário não existe ou foi removido da lista.')
-                    sleep(2)
-                    menu()
 
-    else:
-        print('Ainda não existe lista vip')
-        sleep(2)
-        menu()
 
 def remove_friend() -> None:
 
