@@ -4,10 +4,6 @@ from pathlib import Path
 
 friends_list: list = []
 arch = Path("/home/bruna/Development/projeot_crud/LISTA_VIP.txt")
-friend_class: Friend = Friend(name, cpf)
-friend: dict = {'Identificador': friend_class.identifier, 'Convidado': str(friend_class)}
-
-
 
 def main() -> None:
     menu()
@@ -46,6 +42,8 @@ def add_friend() -> None:
     name: str = input('Informe o nome do convidado: ')
     cpf: str = input('Informe o CPF do convidado. (ex. 000.000.000-00): ')
 
+    friend_class: Friend = Friend(name, cpf)
+    friend: dict = {'Identificador': friend_class.identifier, 'Convidado': str(friend_class)}
     friends_list.append(friend)
 
     with open('LISTA_VIP.txt', 'a') as archive:
@@ -95,23 +93,32 @@ def change_friend() -> None:
 
     name: str = input('Informe o nome atualizado do convidado: ')
     cpf: str = input('Informe o CPF atualizado do convidado. (ex. 000.000.000-00): ')
-
+    friend_class: Friend = Friend(name, cpf)
 
     for f in friends_list:
-        if f['Identificador'] == identifier:
-            f.update({'Convidado': friend_class})
-
-
+        for key, value in f.items():
+            if key == identifier:
+                f[key] == friend_class
+            print(friends_list)
 
 def remove_friend() -> None:
 
     if arch.is_file():
+        list_copy = ''
 
         with open('LISTA_VIP.txt', 'r') as archive:
-            lines = archive.readlines()
-            identifier: int = int(input('Por favor digite o identificador do convidado que você quera exibir: '))
-            for index, i in enumerate(lines):
-                pass
+
+            identifier: str = str(input('Por favor digite o identificador do convidado que você quer exibir: '))
+            for friend in archive:
+                if friend[0] != identifier:
+                    list_copy += friend
+
+        with open('LISTA_VIP.txt', 'w+') as archive2:
+            for friend in list_copy:
+                archive2.write(friend)
+            print('Convidado removido com sucesso.')
+            sleep(1)
+            menu()
 
     else:
         print('Ainda não existe lista vip')
