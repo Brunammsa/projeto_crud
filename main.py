@@ -89,17 +89,28 @@ def list_vip() -> None:
 
 def change_friend() -> None:
 
-    identifier: int = input('\nPor favor digite o identificador do convidado que você quera exibir. ')
+    if arch.is_file():
 
-    name: str = input('Informe o nome atualizado do convidado: ')
-    cpf: str = input('Informe o CPF atualizado do convidado. (ex. 000.000.000-00): ')
-    friend_class: Friend = Friend(name, cpf)
+        identifier: str = input('\nPor favor digite o identificador do convidado que você quera exibir. ')
+        name: str = input('Informe o nome atualizado do convidado: ')
+        cpf: str = input('Informe o CPF atualizado do convidado. (ex. 000.000.000-00): ')
+        friend_class: Friend = Friend(name, cpf)
+        list_copy = ''
 
-    for f in friends_list:
-        for key, value in f.items():
-            if key == identifier:
-                f[key] == friend_class
-            print(friends_list)
+        with open('LISTA_VIP.txt', 'r') as archive:
+            for friend in archive:
+                list_copy += friend
+
+        with open('LISTA_VIP.txt', 'w+') as archive2:
+            for line in list_copy:
+                if line[0] == identifier:
+                    line = f'{line[0]} | {friend_class}'
+                    archive2.write(line)
+                    print('Convidado modificado com sucesso.')
+                else:
+                    archive2.write(line)
+            sleep(1)
+            menu()
 
 def remove_friend() -> None:
 
