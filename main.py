@@ -43,7 +43,7 @@ def add_friend() -> None:
     cpf: str = input('Informe o CPF do convidado. (ex. 000.000.000-00): ')
 
     friend_class: Friend = Friend(name, cpf)
-    friend: dict = {'Identificador': friend_class.identifier, 'Convidado': str(friend_class)}
+    friend: dict = {'Identificador': friend_class.get_last_id, 'Convidado': str(friend_class)}
     friends_list.append(friend)
 
     with open('LISTA_VIP.txt', 'a') as archive:
@@ -91,51 +91,49 @@ def change_friend() -> None:
 
     if arch.is_file():
 
-        identifier: str = input('\nPor favor digite o identificador do convidado que você quera exibir. ')
+        identifier: int = int(input('\nPor favor digite o identificador do convidado que você queira modificar. '))
         name: str = input('Informe o nome atualizado do convidado: ')
         cpf: str = input('Informe o CPF atualizado do convidado. (ex. 000.000.000-00): ')
         friend_class: Friend = Friend(name, cpf)
-        list_copy = ''
 
         with open('LISTA_VIP.txt', 'r') as archive:
-            for friend in archive:
-                list_copy += friend
+            list_friends = archive.readlines()
 
-        with open('LISTA_VIP.txt', 'w+') as archive2:
-            for line in list_copy:
-                if line[0] == identifier:
-                    line = f'{line[0]} | {friend_class}'
-                    archive2.write(line)
-                    print('Convidado modificado com sucesso.')
-                else:
-                    archive2.write(line)
-            sleep(1)
-            menu()
+        list_friends[identifier-1]= f'{identifier} | {friend_class} \n'
+        print('Convidado modificado')
+
+        with open('LISTA_VIP.txt', 'w') as archive2:
+            for line in list_friends:
+                archive2.write(line)
+        sleep(1)
+        menu()
+    else:
+        print('Lista não existe ainda')
+        sleep(2)
+        menu()
 
 def remove_friend() -> None:
 
     if arch.is_file():
-        list_copy = ''
-
+    
+        identifier: int = int(input('Por favor digite o identificador do convidado que você quer exibir: '))
         with open('LISTA_VIP.txt', 'r') as archive:
+            list_friends = archive.readlines()
 
-            identifier: str = str(input('Por favor digite o identificador do convidado que você quer exibir: '))
-            for friend in archive:
-                if friend[0] != identifier:
-                    list_copy += friend
+        list_friends.remove(list_friends[identifier-1])
+        print('Convidado removido')
 
-        with open('LISTA_VIP.txt', 'w+') as archive2:
-            for friend in list_copy:
-                archive2.write(friend)
-            print('Convidado removido com sucesso.')
-            sleep(1)
-            menu()
+        with open('LISTA_VIP.txt', 'w') as archive2:
+            for line in list_friends:
+                archive2.write(line)
+
+        sleep(1)
+        menu()
 
     else:
         print('Ainda não existe lista vip')
         sleep(2)
         menu()
-
 
 if __name__ == '__main__':
     main()
