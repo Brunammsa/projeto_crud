@@ -44,16 +44,24 @@ def add_friend() -> None:
 
     friend_class: Friend = Friend(name, cpf)
 
-    last_id: str = '0'
-    with open('LISTA_VIP.txt', 'r') as archread:
+    num_last_id = ''
+    with open('last_id', 'r+') as archread:
         for line in archread:
-            last_id = str(line[0])
+            num_last_id = line
 
-    friend: dict = {'Identificador': int(last_id) + 1, 'Convidado': str(friend_class)}
+    friend: dict = {'Identificador': int(num_last_id) + 1, 'Convidado': str(friend_class)}
     friends_list.append(friend)
 
     with open('LISTA_VIP.txt', 'a') as archive:
         archive.write(f'{friend["Identificador"]} | {friend["Convidado"]} \n')
+    
+    with open('LISTA_VIP.txt', 'r') as archread:
+        for line in archread:
+            line_list = line.split(' ')
+            last_id = str(line_list[0])
+
+        with open('last_id', 'w+') as arch_id:
+            arch_id.write(last_id)
 
     print(f'O convidado(a) {friend_class.name} com adicionado(a) com sucesso!')
     sleep(1)
