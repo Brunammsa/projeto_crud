@@ -43,7 +43,13 @@ def add_friend() -> None:
     cpf: str = input('Informe o CPF do convidado. (ex. 000.000.000-00): ')
 
     friend_class: Friend = Friend(name, cpf)
-    friend: dict = {'Identificador': friend_class.get_last_id, 'Convidado': str(friend_class)}
+
+    last_id: str = '0'
+    with open('LISTA_VIP.txt', 'r') as archread:
+        for line in archread:
+            last_id = str(line[0])
+
+    friend: dict = {'Identificador': int(last_id) + 1, 'Convidado': str(friend_class)}
     friends_list.append(friend)
 
     with open('LISTA_VIP.txt', 'a') as archive:
