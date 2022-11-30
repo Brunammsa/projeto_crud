@@ -1,9 +1,9 @@
 from time import sleep
-from functions.helpers import Friend
 from pathlib import Path
+from functions.helpers import Friend
 
-friends_list: list = []
-arch = Path("/home/bruna/Development/projeot_crud/LISTA_VIP.txt")
+guest_list: list = []
+absolute_path = Path("/home/bruna/Development/projeot_crud/LISTA_VIP.txt")
 
 def main() -> None:
     menu()
@@ -17,15 +17,15 @@ def menu() -> None:
     option: int = int(input())
 
     if option == 1:
-        add_friend()
+        add_guest()
     elif option == 2:
-        exhibt_friend()
+        exhibt_guest()
     elif option == 3:
         list_vip()
     elif option == 4:
-        change_friend()
+        change_guest()
     elif option == 5:
-        remove_friend()
+        remove_guest()
     elif option == 6:
         print('Lista encerrada')
         sleep(2)
@@ -35,41 +35,41 @@ def menu() -> None:
         sleep(1)
         menu()
 
-def add_friend() -> None:
+def add_guest() -> None:
     print('Adicionar nome a lista')
     print('~~~~~~~~~~~~~~~~~~~~~~\n')
 
     name: str = input('Informe o nome do convidado: ')
     cpf: str = input('Informe o CPF do convidado. (ex. 000.000.000-00): ')
 
-    friend_class: Friend = Friend(name, cpf)
+    class_of_guests: Friend = Friend(name, cpf)
 
-    num_last_id = ''
-    with open('last_id', 'r+') as archread:
-        for line in archread:
-            num_last_id = line
+    number_last_id = '0'
+    with open('last_id', 'r+') as arch_read:
+        for line in arch_read:
+            number_last_id = line
 
-    friend: dict = {'Identificador': int(num_last_id) + 1, 'Convidado': str(friend_class)}
-    friends_list.append(friend)
+    guest: dict = {'Identificador': int(number_last_id) + 1, 'Convidado': str(class_of_guests)}
+    guest_list.append(guest)
 
     with open('LISTA_VIP.txt', 'a') as archive:
-        archive.write(f'{friend["Identificador"]} | {friend["Convidado"]} \n')
+        archive.write(f'{guest["Identificador"]} | {guest["Convidado"]} \n')
     
-    with open('LISTA_VIP.txt', 'r') as archread:
-        for line in archread:
+    with open('LISTA_VIP.txt', 'r') as arch_read:
+        for line in arch_read:
             line_list = line.split(' ')
             last_id = str(line_list[0])
 
         with open('last_id', 'w+') as arch_id:
             arch_id.write(last_id)
 
-    print(f'O convidado(a) {friend_class.name} com adicionado(a) com sucesso!')
+    print(f'O convidado(a) {class_of_guests.name} com adicionado(a) com sucesso!')
     sleep(1)
     menu()
 
-def exhibt_friend() -> None:
+def exhibt_guest() -> None:
 
-    if arch.is_file():
+    if absolute_path.is_file():
         identifier: int = input('\nPor favor digite o identificador do convidado que você quera exibir. ')
 
         with open('LISTA_VIP.txt', 'r') as archive:
@@ -88,7 +88,7 @@ def exhibt_friend() -> None:
         menu()
 
 def list_vip() -> None:
-    if arch.is_file():
+    if absolute_path.is_file():
         with open('LISTA_VIP.txt', 'r') as archive:
             for line in archive:
                 print(line)
@@ -101,23 +101,23 @@ def list_vip() -> None:
         sleep(2)
         menu()
 
-def change_friend() -> None:
+def change_guest() -> None:
 
-    if arch.is_file():
+    if absolute_path.is_file():
 
         identifier: int = int(input('\nPor favor digite o identificador do convidado que você queira modificar. '))
         name: str = input('Informe o nome atualizado do convidado: ')
         cpf: str = input('Informe o CPF atualizado do convidado. (ex. 000.000.000-00): ')
-        friend_class: Friend = Friend(name, cpf)
+        class_of_guests: Friend = Friend(name, cpf)
 
         with open('LISTA_VIP.txt', 'r') as archive:
-            list_friends = archive.readlines()
+            guest_list = archive.readlines()
 
-        list_friends[identifier-1]= f'{identifier} | {friend_class} \n'
+        guest_list[identifier-1]= f'{identifier} | {class_of_guests} \n'
         print('Convidado modificado')
 
         with open('LISTA_VIP.txt', 'w') as archive2:
-            for line in list_friends:
+            for line in guest_list:
                 archive2.write(line)
         sleep(1)
         menu()
@@ -126,19 +126,24 @@ def change_friend() -> None:
         sleep(2)
         menu()
 
-def remove_friend() -> None:
+def remove_guest() -> None:
 
-    if arch.is_file():
+    if absolute_path.is_file():
     
-        identifier: int = int(input('Por favor digite o identificador do convidado que você quer exibir: '))
+        identifier: str = str(input('Por favor digite o identificador do convidado que você quer exibir: '))
         with open('LISTA_VIP.txt', 'r') as archive:
-            list_friends = archive.readlines()
+            guest_list = archive.readlines()
 
-        list_friends.remove(list_friends[identifier-1])
-        print('Convidado removido')
+            for line in guest_list:
+                line_guest = line.split(' ')
+                first_position = str(line_guest[0])
+
+                if first_position == identifier:
+                    guest_list.remove(line)
+                    print('Convidado removido')
 
         with open('LISTA_VIP.txt', 'w') as archive2:
-            for line in list_friends:
+            for line in guest_list:
                 archive2.write(line)
 
         sleep(1)

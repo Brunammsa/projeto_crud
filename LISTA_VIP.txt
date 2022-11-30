@@ -1,12 +1,2 @@
-2 | Nome: felipe,  CPF: 222 
-3 | Nome: bruno,  CPF: 111 
-4 | Nome: anna,  CPF: 222 
-5 | Nome: vanessa,  CPF: 222 
-6 | Nome: lucas,  CPF: 222 
-7 | Nome: tenorio,  CPF: 33 
-8 | Nome: gleice,  CPF: 444 
-9 | Nome: akasya,  CPF: 333 
-10 | Nome: hemerson,  CPF: 999 
-11 | Nome: aguiar,  CPF: 333 
-12 | Nome: toledo,  CPF: 222 
-13 | Nome: augusto,  CPF: 555 
+4 | Nome: renata,  CPF: 444 
+5 | Nome: karol,  CPF: 555 
