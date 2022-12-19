@@ -1,8 +1,9 @@
 class Friend:
 
-    def __init__(self: object, name: str, cpf: str) -> None:
+    def __init__(self: object, name: str, cpf: str, id: int) -> None:
         self.__name: str = name
         self.__cpf: str = cpf
+        self.__id: int = id
     
     @property
     def name(self: object) -> str:
@@ -20,5 +21,12 @@ class Friend:
     def cpf(self: object, cpf: str) -> None:
         self.__cpf = cpf
 
+    @property
+    def id(self: object) -> int:
+        return self.__id
+
+    def to_csv(self) -> str:
+        return f'{self.__id}, {self.__name}, {self.__cpf}'
+
     def __str__(self) -> str:
-        return f'Nome: {self.name},  CPF: {self.cpf}'
+        return self.name, self.cpf, self.id

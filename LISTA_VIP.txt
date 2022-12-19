@@ -1,2 +1,0 @@
-4 | Nome: renata,  CPF: 444 
-5 | Nome: karol,  CPF: 555 
