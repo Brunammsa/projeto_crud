@@ -31,9 +31,9 @@ def menu() -> None:
         elif option == "3":
             list()
         elif option == "4":
-            change_guest()
+            update()
         elif option == "5":
-            remove_guest()
+            remove()
         elif option == "6":
             exit(0)
 
@@ -45,18 +45,18 @@ def add() -> None:
     name: str = input('Informe o nome do convidado: ')
     cpf: str = input('Informe o CPF do convidado. (ex. 000.000.000-00): ')
 
-    with open('last_inserted_id.txt', 'r+') as arch_read:
-        for line in arch_read:
+    with open('last_inserted_id.txt', 'r+') as file_read:
+        for line in file_read:
             number_last_id = line
 
     friend: Friend = Friend(name, cpf, int(number_last_id) + 1)
 
-    with open('list.csv', 'a') as archive:
-        archive.write(friend.to_csv())
-        archive.write('\n')
+    with open('list.csv', 'a') as file:
+        file.write(friend.to_csv())
+        file.write('\n')
 
-    with open('last_inserted_id.txt', 'w+') as arch_id:
-        arch_id.write(str(friend.id))
+    with open('last_inserted_id.txt', 'w+') as file_id:
+        file_id.write(str(friend.id))
 
     print(f'\nO convidado(a) {friend.name} com adicionado(a) com sucesso!\n')
 
@@ -64,13 +64,12 @@ def add() -> None:
 def show() -> None:
     if relative_path.is_file():
 
-        identifier: int = input('Por favor digite o identificador do convidado que você quera exibir: ')
+        identifier: str = input('Por favor digite o identificador do convidado que você quera exibir: ')
 
-        with open('list.csv', 'r') as archive:
-            archive_csv = csv.reader(archive, delimiter=',')
-            for i, line in enumerate(archive_csv):
-                    
-                print(line[i])
+        with open('list.csv', 'r') as file:
+            for line in file:
+                if line[0] == identifier:
+                    print(line)
             else:
                 print('\nEste usuário não existe ou foi removido da lista.')
     else:
@@ -79,43 +78,61 @@ def show() -> None:
 
 def list() -> None:
     if relative_path.is_file():
-        with open('list.csv', 'r') as archive:
-            archive_csv = csv.reader(archive, delimiter=',')
+        with open('list.csv', 'r') as file:
             print('\n')
-            for line in archive_csv:
+            for line in file:
                 print(str(line))
-            print('\n')
+        print('\n')
     else:
         print('A lista vip ainda não existe.')
 
 
-def change_guest() -> None:
+def update() -> None:
     if relative_path.is_file():
+
         identifier: int = int(input('\nPor favor digite o identificador do convidado que você queira modificar. '))
+
+        friends = []
+        ids = []
+
+        with open('list.csv', 'r') as file:
+            friends_lists = file.readlines()
+            for line in friends_lists[1:]:
+                line_striped = line.strip()
+                line_splited = line_striped.split(',')
+
+                for index, valor in enumerate(line_splited):
+                    line_splited[index] = valor.strip()
+                
+                friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
+
+                ids.append(friend.id)
+                friends.append(friend)
+
+        if identifier not in ids:
+            print('Este ID não existe')
+            return
+
         name: str = input('Informe o nome atualizado do convidado: ')
         cpf: str = input('Informe o CPF atualizado do convidado. (ex. 000.000.000-00): ')
-        class_of_guests: Friend = Friend(name, cpf)
 
-        with open('list.csv', 'r') as archive:
-            guest_list = archive.readlines()
-
-        guest_list[identifier-1]= f'{identifier} | {class_of_guests} \n'
-
-        print('Convidado modificado')
-
-        with open('list.csv', 'w') as archive2:
-            for line in guest_list:
-                archive2.write(line)
+        with open('list.csv', 'w+') as file:
+            file.write('ID, NOME, CPF\n')
+            for friend in friends:
+                if friend.id == identifier:
+                    friend.name = name
+                    friend.cpf = cpf
+                file.write(f'{friend.to_csv()}\n')
     else:
-        print('Lista não existe ainda')
+        print('Não existe arquivo')
 
 
-def remove_guest() -> None:
+def remove() -> None:
     if relative_path.is_file():
         identifier: str = str(input('Por favor digite o identificador do convidado que você quer exibir: '))
 
-        with open('list.csv', 'r') as archive:
-            guest_list = archive.readlines()
+        with open('list.csv', 'r') as file:
+            guest_list = file.readlines()
 
             for line in guest_list:
                 line_guest = line.split(' ')
@@ -126,9 +143,9 @@ def remove_guest() -> None:
 
                     print('Convidado removido')
 
-        with open('list.csv', 'w') as archive2:
+        with open('list.csv', 'w') as file2:
             for line in guest_list:
-                archive2.write(line)
+                file2.write(line)
     else:
 
         print('Ainda não existe lista vip')

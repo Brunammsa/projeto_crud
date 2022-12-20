@@ -25,7 +25,7 @@ class Friend:
     def id(self: object) -> int:
         return self.__id
 
-    def to_csv(self) -> str:
+    def to_csv(self: object) -> str:
         return f'{self.__id}, {self.__name}, {self.__cpf}'
 
     def __str__(self) -> str:
