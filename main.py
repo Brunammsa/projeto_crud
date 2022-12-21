@@ -129,27 +129,38 @@ def update() -> None:
 
 def remove() -> None:
     if relative_path.is_file():
-        identifier: str = str(input('Por favor digite o identificador do convidado que você quer exibir: '))
+
+        identifier: int = int(input('\nPor favor digite o identificador do convidado que você queira modificar. '))
+
+        friends: list = []
+        ids: list = []
 
         with open('list.csv', 'r') as file:
-            guest_list = file.readlines()
+            friends_lists = file.readlines()
+            for line in friends_lists[1:]:
+                line_striped = line.strip()
+                line_splited = line_striped.split(',')
 
-            for line in guest_list:
-                line_guest = line.split(' ')
-                first_position = str(line_guest[0])
+                for index, valor in enumerate(line_splited):
+                    line_splited[index] = valor.strip()
+                
+                friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
 
-                if first_position == identifier:
-                    guest_list.remove(line)
+                ids.append(friend.id)
+                friends.append(friend)
+                
+        if identifier not in ids:
+            print('Este ID não existe\n')
+            return
 
-                    print('Convidado removido')
-
-        with open('list.csv', 'w') as file2:
-            for line in guest_list:
-                file2.write(line)
+        with open('list.csv', 'w+') as file:
+            file.write('ID, NOME, CPF\n')
+            for friend in friends:
+                if friend.id != identifier:
+                    file.write(f'{friend.to_csv()}\n')
+            print('Convidado removido\n!')
     else:
-
-        print('Ainda não existe lista vip')
-
+        print('Não existe arquivo\n')
 
 if __name__ == '__main__':
 
