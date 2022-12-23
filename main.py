@@ -1,6 +1,6 @@
 from pathlib import Path
 from classes.Friend import Friend
-from classes.leitura_tratamento import LeituraETratamento
+from classes.leitura_tratamento import ListRepository
 import csv
 
 
@@ -49,7 +49,6 @@ def add() -> None:
             number_last_id = line
 
     friend: Friend = Friend(name, cpf, int(number_last_id) + 1)
-    relative_path = Path("list.csv")
 
     with open('list.csv', 'a') as file:
         file.write(friend.to_csv())
@@ -62,46 +61,28 @@ def add() -> None:
 
 
 def show() -> None:
-    relative_path = Path("list.csv")
-    if relative_path.is_file():
 
-        identifier: int = int(input('Por favor digite o identificador do convidado que você quera exibir: '))
+    identifier: int = int(input('Por favor digite o identificador do convidado que você quera exibir: '))
+    list_repository: ListRepository = ListRepository()
 
-        with open('list.csv', 'r') as file:
-            friends_lists = file.readlines()
-            for line in friends_lists[1:]:
-                line_striped = line.strip()
-                line_splited = line_striped.split(',')
+    friend = list_repository.show(identifier)
 
-                for index, valor in enumerate(line_splited):
-                    line_splited[index] = valor.strip()
-                
-                friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
-
-                if friend.id == identifier:
-                    print(f'{friend.to_csv()}\n')
-                    return
-
-            print('\nEste ID não existe na lista\n')
-
+    if friend is None:
+        print('Não existe usuário com este ID')
     else:
-        print('A lista vip ainda não existe.')
+        print(friend.to_csv())
 
 
 def list() -> None:
-    relative_path = Path("list.csv")
-    if relative_path.is_file():
-        with open('list.csv', 'r') as file:
-            print('\n')
-            for line in file:
-                print(str(line))
-        print('\n')
-    else:
-        print('A lista vip ainda não existe.')
+
+    list_repository: ListRepository = ListRepository()
+    friends = list_repository.index()
+    
+    for friend in friends:
+        print(friend.to_csv())
 
 
 def update() -> None:
-    relative_path = Path("list.csv")
     if relative_path.is_file():
 
         identifier: int = int(input('\nPor favor digite o identificador do convidado que você queira modificar. '))
@@ -142,7 +123,6 @@ def update() -> None:
 
 
 def remove() -> None:
-    relative_path = Path("list.csv")
     if relative_path.is_file():
 
         identifier: int = int(input('\nPor favor digite o identificador do convidado que você queira modificar. '))

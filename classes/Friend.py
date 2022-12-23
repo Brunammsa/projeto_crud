@@ -1,9 +1,9 @@
 class Friend:
 
-    def __init__(self: object, name: str, cpf: str, id: int) -> None:
-        self.__name: str = name
-        self.__cpf: str = cpf
-        self.__id: int = id
+    def __init__(self: object, name: str, cpf: str, id) -> None:
+        self.__name: str = name.strip()
+        self.__cpf: str = cpf.strip()
+        self.__id: int = int(id)
     
     @property
     def name(self: object) -> str:
