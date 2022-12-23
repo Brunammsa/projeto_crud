@@ -36,36 +36,5 @@ class ListRepository:
             return self.__friends
 
 
-    def update(self):
-        identifier: int = int(input('\nPor favor digite o identificador do convidado que você queira modificar. '))
-        friends = []
-        ids = []
-        
-        with open('list.csv', 'r') as file:
-            friends_lists = file.readlines()
-            for line in friends_lists[1:]:
-                line_striped = line.strip()
-                line_splited = line_striped.split(',')
-
-                for index, valor in enumerate(line_splited):
-                    line_splited[index] = valor.strip()
-                
-                friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
-
-                ids.append(friend.id)
-                friends.append(friend)
-
-        if identifier not in ids:
-            print('Este ID não existe')
-            return
-
-        name: str = input('Informe o nome atualizado do convidado: ')
-        cpf: str = input('Informe o CPF atualizado do convidado. (ex. 000.000.000-00): ')
-
-        with open('list.csv', 'w+') as file:
-            file.write('ID, NOME, CPF\n')
-            for friend in friends:
-                if friend.id == identifier:
-                    friend.name = name
-                    friend.cpf = cpf
-                file.write(f'{friend.to_csv()}\n')
+    def update(self, friend: Friend) -> None:
+        pass

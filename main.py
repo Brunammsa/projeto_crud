@@ -83,44 +83,24 @@ def list() -> None:
 
 
 def update() -> None:
-    if relative_path.is_file():
 
-        identifier: int = int(input('\nPor favor digite o identificador do convidado que você queira modificar. '))
+    identifier: int = int(input('Por favor digite o identificador do convidado que você quera exibir: '))
+    list_repository: ListRepository = ListRepository()
 
-        friends = []
-        ids = []
+    friend = list_repository.show(identifier)
 
-        with open('list.csv', 'r') as file:
-            friends_lists = file.readlines()
-            for line in friends_lists[1:]:
-                line_striped = line.strip()
-                line_splited = line_striped.split(',')
+    if friend is None:
+        print('Não existe usuário com este ID')
+        return
 
-                for index, valor in enumerate(line_splited):
-                    line_splited[index] = valor.strip()
-                
-                friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
+    name: str = input('Informe o nome atualizado do convidado: ')
+    cpf: str = input('Informe o CPF atualizado do convidado. (ex. 000.000.000-00): ')
 
-                ids.append(friend.id)
-                friends.append(friend)
+    friend.name = name
+    friend.cpf = cpf
 
-        if identifier not in ids:
-            print('Este ID não existe')
-            return
-
-        name: str = input('Informe o nome atualizado do convidado: ')
-        cpf: str = input('Informe o CPF atualizado do convidado. (ex. 000.000.000-00): ')
-
-        with open('list.csv', 'w+') as file:
-            file.write('ID, NOME, CPF\n')
-            for friend in friends:
-                if friend.id == identifier:
-                    friend.name = name
-                    friend.cpf = cpf
-                file.write(f'{friend.to_csv()}\n')
-    else:
-        print('Não existe arquivo')
-
+    list_repository.update(friend)
+    
 
 def remove() -> None:
     if relative_path.is_file():
