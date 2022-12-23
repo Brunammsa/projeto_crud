@@ -1,15 +1,15 @@
 from classes.Friend import Friend
 
 class LeituraETratamento:
-    def __init__(self, texto):
+    def __init__(self: object, texto, id: list, friends: list):
         self.__texto = texto
         self.__id = id
         self.__friends = friends
 
     def leitura_e_tratamento_da_lista_csv(self: object):
 
-        friends: list = []
-        id: list = []
+        friends: list = [self.__friends]
+        id: list = [self.__id]
 
         with open(self.__texto, 'r') as file:
             friends_lists = file.readlines()

@@ -66,8 +66,6 @@ def show() -> None:
     if relative_path.is_file():
 
         identifier: int = int(input('Por favor digite o identificador do convidado que você quera exibir: '))
-        friends = []
-        ids = []
 
         with open('list.csv', 'r') as file:
             friends_lists = file.readlines()
@@ -80,16 +78,12 @@ def show() -> None:
                 
                 friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
 
-                ids.append(friend.id)
-                friends.append(friend)
+                if friend.id == identifier:
+                    print(f'{friend.to_csv()}\n')
+                    return
 
-        if identifier not in ids:
             print('\nEste ID não existe na lista\n')
-            return
 
-        for friend in friends:
-            if friend.id == identifier:
-                print(f'{friend.to_csv()}\n')
     else:
         print('A lista vip ainda não existe.')
 
