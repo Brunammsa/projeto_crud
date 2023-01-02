@@ -103,39 +103,15 @@ def update() -> None:
     
 
 def remove() -> None:
-    if relative_path.is_file():
 
-        identifier: int = int(input('\nPor favor digite o identificador do convidado que você queira modificar. '))
+    identifier: int = int(input('\nPor favor digite o identificador do convidado que você queira modificar. '))
+    list_repository: ListRepository = ListRepository()
 
-        friends: list = []
-        ids: list = []
+    friend = list_repository.remove(identifier)
 
-        with open('list.csv', 'r') as file:
-            friends_lists = file.readlines()
-            for line in friends_lists[1:]:
-                line_striped = line.strip()
-                line_splited = line_striped.split(',')
+    if friend is None:
+        return
 
-                for index, valor in enumerate(line_splited):
-                    line_splited[index] = valor.strip()
-                
-                friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
-
-                ids.append(friend.id)
-                friends.append(friend)
-                
-        if identifier not in ids:
-            print('Este ID não existe\n')
-            return
-
-        with open('list.csv', 'w+') as file:
-            file.write('ID, NOME, CPF\n')
-            for friend in friends:
-                if friend.id != identifier:
-                    file.write(f'{friend.to_csv()}\n')
-            print('Convidado removido\n!')
-    else:
-        print('Não existe arquivo\n')
 
 if __name__ == '__main__':
 
