@@ -5,6 +5,7 @@ from pathlib import Path
 class ListRepository:
     def __init__(self: object):
         self.__file = Path("list.csv")
+        self.__friends = []
 
 
     def show(self, id: int) -> Optional[Friend]:
@@ -23,7 +24,6 @@ class ListRepository:
     
 
     def index(self) -> list[Friend]:
-        self.__friends = []
 
         with open(self.__file, 'r') as file:
             friends_lists = file.readlines()
@@ -37,8 +37,19 @@ class ListRepository:
             return self.__friends
 
 
+    def update(self, id: int) -> Optional[Friend]:
+
+        with open('list.csv', 'w+') as file:
+            file.write('ID, NOME, CPF\n')
+            for friend in friends:
+                if friend.id == id:
+
+                    friend: Friend = Friend(friend.name, friend.cpf, id)
+                    file.write(f'{friend.to_csv()}\n')
+            print('Usuário atualizado')
+
+
     def remove(self, id: int) -> Optional[Friend]:
-        self.__friends = []
         ids: list = []
 
         with open(self.__file, 'r') as file:

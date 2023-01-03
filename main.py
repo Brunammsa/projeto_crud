@@ -98,8 +98,8 @@ def update() -> None:
 
     friend.name = name
     friend.cpf = cpf
-
-    list_repository.update(friend)
+    
+    list_repository.update(identifier)
     
 
 def remove() -> None:
