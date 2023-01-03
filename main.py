@@ -85,22 +85,16 @@ def list() -> None:
 def update() -> None:
 
     identifier: int = int(input('Por favor digite o identificador do convidado que você quera exibir: '))
-    list_repository: ListRepository = ListRepository()
-
-    friend = list_repository.show(identifier)
-
-    if friend is None:
-        print('Não existe usuário com este ID')
-        return
-
     name: str = input('Informe o nome atualizado do convidado: ')
     cpf: str = input('Informe o CPF atualizado do convidado. (ex. 000.000.000-00): ')
 
-    friend.name = name
-    friend.cpf = cpf
-    
-    list_repository.update(identifier)
-    
+    list_repository: ListRepository = ListRepository()
+
+    friend = list_repository.update(name, cpf, identifier)
+
+    if friend is None:
+        return
+
 
 def remove() -> None:
 

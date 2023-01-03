@@ -37,15 +37,35 @@ class ListRepository:
             return self.__friends
 
 
-    def update(self, id: int) -> Optional[Friend]:
+    def update(self, name: str, cpf: str, id: int) -> Optional[Friend]:
+        ids: list = []
+        friends: list = []
+
+        with open(self.__file, 'r') as file:
+            friends_lists = file.readlines()
+            for line in friends_lists[1:]:
+                line_striped = line.strip()
+                line_splited = line_striped.split(',')
+
+                for index, valor in enumerate(line_splited):
+                    line_splited[index] = valor.strip()
+
+                friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
+                friends.append(friend)
+                ids.append(friend.id)
+
+        if id not in ids:
+            print('Usuário não encontrado')
+            return
 
         with open('list.csv', 'w+') as file:
             file.write('ID, NOME, CPF\n')
             for friend in friends:
                 if friend.id == id:
-
-                    friend: Friend = Friend(friend.name, friend.cpf, id)
+                    friend.name = name
+                    friend.cpf = cpf
                     file.write(f'{friend.to_csv()}\n')
+                file.write(f'{friend.to_csv()}\n')
             print('Usuário atualizado')
 
 
