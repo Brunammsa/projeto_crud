@@ -65,7 +65,7 @@ class ListRepository:
                     friend.name = name
                     friend.cpf = cpf
                     file.write(f'{friend.to_csv()}\n')
-                file.write(f'{friend.to_csv()}\n')
+            file.write(f'{friend.to_csv()}\n')
             print('Usuário atualizado')
 
 
