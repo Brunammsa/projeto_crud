@@ -6,6 +6,7 @@ class ListRepository:
     def __init__(self: object):
         self.__file = Path("list.csv")
         self.__friends = []
+        self.__ids = []
 
 
     def show(self, id: int) -> Optional[Friend]:
@@ -17,6 +18,9 @@ class ListRepository:
                 line_splited = line_striped.split(',')
                 
                 friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
+
+                self.__friends.append(friend)
+                self.__ids.append(friend.id)
 
                 if friend.id == id:
                     return friend
@@ -37,61 +41,22 @@ class ListRepository:
             return self.__friends
 
 
-    def update(self, name: str, cpf: str, id: int) -> Optional[Friend]:
-        ids: list = []
-        friends: list = []
-
-        with open(self.__file, 'r') as file:
-            friends_lists = file.readlines()
-            for line in friends_lists[1:]:
-                line_striped = line.strip()
-                line_splited = line_striped.split(',')
-
-                for index, valor in enumerate(line_splited):
-                    line_splited[index] = valor.strip()
-
-                friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
-                friends.append(friend)
-                ids.append(friend.id)
-
-        if id not in ids:
-            print('Usuário não encontrado')
-            return
+    def update(self, name: str, cpf: str, id: int) -> None:
 
         with open('list.csv', 'w+') as file:
             file.write('ID, NOME, CPF\n')
-            for friend in friends:
+            for friend in self.__friends:
                 if friend.id == id:
                     friend.name = name
                     friend.cpf = cpf
                     file.write(f'{friend.to_csv()}\n')
             file.write(f'{friend.to_csv()}\n')
-            print('Usuário atualizado')
 
 
-    def remove(self, id: int) -> Optional[Friend]:
-        ids: list = []
-
-        with open(self.__file, 'r') as file:
-            friends_lists = file.readlines()
-            for line in friends_lists[1:]:
-                line_striped = line.strip()
-                line_splited = line_striped.split(',')
-
-                for index, valor in enumerate(line_splited):
-                    line_splited[index] = valor.strip()
-
-                friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
-                self.__friends.append(friend)
-                ids.append(friend.id)
-
-        if id not in ids:
-            print('Usuário não encontrado')
-            return
+    def remove(self, id: int) -> None:
 
         with open('list.csv', 'w+') as file:
             file.write('ID, NOME, CPF\n')
             for friend in self.__friends:
                 if friend.id != id:
                     file.write(f'{friend.to_csv()}\n')
-            print('Usuário removido')
