@@ -11,6 +11,8 @@ class FriendRepository:
 
     def show(self, id: int) -> Optional[Friend]:
 
+        friend_found = None
+        
         with open(self.__file, 'r') as file:
             friends_lists = file.readlines()
             for line in friends_lists[1:]:
@@ -21,8 +23,8 @@ class FriendRepository:
                 self.__friends.append(friend)
 
                 if friend.id == id:
-                    return friend
-            return None
+                    friend_found = friend
+            return friend_found
     
 
     def index(self) -> list[Friend]:
@@ -47,8 +49,7 @@ class FriendRepository:
                 if friend.id == id:
                     friend.name = name
                     friend.cpf = cpf
-                    file.write(f'{friend.to_csv()}\n')
-            file.write(f'{friend.to_csv()}\n')
+                file.write(f'{friend.to_csv()}\n')
 
 
     def remove(self, id: int) -> bool:
