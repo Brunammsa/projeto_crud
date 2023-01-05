@@ -94,8 +94,11 @@ def update() -> None:
     else:
         name: str = input('Informe o nome atualizado do convidado: ')
         cpf: str = input('Informe o CPF atualizado do convidado. (ex. 000.000.000-00): ')
-
-        friend_repository.update(name, cpf, identifier)
+        
+        friend.name = name
+        friend.cpf = cpf
+        
+        friend_repository.update(friend)
         print('Usuário atualizado')
 
 

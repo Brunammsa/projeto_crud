@@ -41,20 +41,20 @@ class FriendRepository:
             return self.__friends
 
 
-    def update(self, name: str, cpf: str, id: int) -> None:
+    def update(self, friend: Friend) -> None:
 
-        with open('list.csv', 'w+') as file:
+        with open(self.__file, 'w+') as file:
             file.write('ID, NOME, CPF\n')
-            for friend in self.__friends:
-                if friend.id == id:
-                    friend.name = name
-                    friend.cpf = cpf
-                file.write(f'{friend.to_csv()}\n')
+            for temp_friend in self.__friends:
+                if temp_friend.id == friend.id:
+                    temp_friend.name = friend.name
+                    temp_friend.cpf = friend.cpf
+                file.write(f'{temp_friend.to_csv()}\n')
 
 
     def remove(self, id: int) -> bool:
         
-        with open('list.csv', 'r') as file:
+        with open(self.__file, 'r') as file:
             friends_lists = file.readlines()
             for line in friends_lists[1:]:
                 line_striped = line.strip()
@@ -68,7 +68,7 @@ class FriendRepository:
         if id not in self.__ids:
             return False
             
-        with open('list.csv', 'w+') as file:
+        with open(self.__file, 'w+') as file:
             file.write('ID, NOME, CPF\n')
             for friend in self.__friends:
                 if friend.id != id:
