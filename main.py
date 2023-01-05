@@ -91,25 +91,22 @@ def update() -> None:
 
     if friend is None:
         print('Não existe usuário com este ID\n')
-        return
+    else:
+        name: str = input('Informe o nome atualizado do convidado: ')
+        cpf: str = input('Informe o CPF atualizado do convidado. (ex. 000.000.000-00): ')
 
-    name: str = input('Informe o nome atualizado do convidado: ')
-    cpf: str = input('Informe o CPF atualizado do convidado. (ex. 000.000.000-00): ')
-
-    friend.name = name
-    friend.cpf = cpf
-
-    friend = list_repository.update(identifier)
+        list_repository.update(name, cpf, identifier)
+        print('Usuário atualizado')
 
 
 def remove() -> None:
 
-    identifier: int = int(input('\nPor favor digite o identificador do convidado que você queira modificar. '))
+    identifier: int = int(input('\nPor favor digite o identificador do convidado que você queira remover. '))
     list_repository: ListRepository = ListRepository()
 
-    friend = list_repository.remove(identifier)
+    removed = list_repository.remove(identifier)
 
-    if friend is None:
+    if removed == False:
         print('Não existe usuário com este ID\n')
     else:
         print('Usuário removido\n')

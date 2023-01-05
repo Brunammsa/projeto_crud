@@ -39,28 +39,25 @@ class ListRepository:
             return self.__friends
 
 
-    def update(self, id: int) -> None:
-        
-        friends = ListRepository.get_list
+    def update(self, name: str, cpf: str, id: int) -> None:
 
         with open('list.csv', 'w+') as file:
             file.write('ID, NOME, CPF\n')
-            for friend in friends:
+            for friend in self.__friends:
                 if friend.id == id:
+                    friend.name = name
+                    friend.cpf = cpf
                     file.write(f'{friend.to_csv()}\n')
-                file.write(f'{friend.to_csv()}\n')
+            file.write(f'{friend.to_csv()}\n')
 
 
-    def remove(self, id: int) -> None:
-
+    def remove(self, id: int) -> bool:
+        
         with open('list.csv', 'r') as file:
             friends_lists = file.readlines()
             for line in friends_lists[1:]:
                 line_striped = line.strip()
                 line_splited = line_striped.split(',')
-
-                for index, valor in enumerate(line_splited):
-                    line_splited[index] = valor.strip()
 
                 friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
 
@@ -68,11 +65,11 @@ class ListRepository:
                 self.__friends.append(friend)
 
         if id not in self.__ids:
-            return None
+            return False
             
         with open('list.csv', 'w+') as file:
             file.write('ID, NOME, CPF\n')
             for friend in self.__friends:
                 if friend.id != id:
                     file.write(f'{friend.to_csv()}\n')
-
+        return True
