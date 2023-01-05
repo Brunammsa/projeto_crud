@@ -6,7 +6,6 @@ class ListRepository:
     def __init__(self: object):
         self.__file = Path("list.csv")
         self.__friends = []
-        self.__ids = []
 
 
     def show(self, id: int) -> Optional[Friend]:
@@ -18,9 +17,7 @@ class ListRepository:
                 line_splited = line_striped.split(',')
                 
                 friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
-
                 self.__friends.append(friend)
-                self.__ids.append(friend.id)
 
                 if friend.id == id:
                     return friend
@@ -41,22 +38,6 @@ class ListRepository:
             return self.__friends
 
 
-    def update(self, name: str, cpf: str, id: int) -> None:
-
-        with open('list.csv', 'w+') as file:
-            file.write('ID, NOME, CPF\n')
-            for friend in self.__friends:
-                if friend.id == id:
-                    friend.name = name
-                    friend.cpf = cpf
-                    file.write(f'{friend.to_csv()}\n')
-            file.write(f'{friend.to_csv()}\n')
-
-
-    def remove(self, id: int) -> None:
-
-        with open('list.csv', 'w+') as file:
-            file.write('ID, NOME, CPF\n')
-            for friend in self.__friends:
-                if friend.id != id:
-                    file.write(f'{friend.to_csv()}\n')
+    def update(self, id: int) -> None:
+        
+        pass

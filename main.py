@@ -3,6 +3,7 @@ from classes.Friend import Friend
 from classes.leitura_tratamento import ListRepository
 import csv
 
+relative_path = Path("list.csv")
 
 def main() -> None:
     print('~~~~~~~~~~~~~~ Bem vindo(a) a NOX ~~~~~~~~~~~~~')
@@ -83,37 +84,58 @@ def list() -> None:
 
 
 def update() -> None:
-
     identifier: int = int(input('Por favor digite o identificador do convidado que você quera exibir: '))
-
     list_repository: ListRepository = ListRepository()
+
     friend = list_repository.show(identifier)
 
     if friend is None:
-        print('Não existe usuário com este ID')
+        print('Não existe usuário com este ID\n')
         return
 
     name: str = input('Informe o nome atualizado do convidado: ')
     cpf: str = input('Informe o CPF atualizado do convidado. (ex. 000.000.000-00): ')
 
-    list_repository.update(name, cpf, identifier)
-    print('Usuário atualizado')
+    friend.name = name
+    friend.cpf = cpf
+
+    friend = list_repository.update(identifier)
 
 
 def remove() -> None:
 
-    identifier: int = int(input('\nPor favor digite o identificador do convidado que você queira modificar. '))
-    list_repository: ListRepository = ListRepository()
+    if relative_path.is_file():
+        identifier: int = int(input('\nPor favor digite o identificador do convidado que você queira modificar. '))
 
-    friend = list_repository.show(identifier)
+        friends: list = []
+        ids: list = []
 
-    if friend is None:
-        print('Não existe usuário com este ID')
-        return
+        with open('list.csv', 'r') as file:
+            friends_lists = file.readlines()
+            for line in friends_lists[1:]:
+                line_striped = line.strip()
+                line_splited = line_striped.split(',')
 
-    list_repository.remove(identifier)
-    print('Usuário removido')
-    
+                for index, valor in enumerate(line_splited):
+                    line_splited[index] = valor.strip()
+
+                friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
+
+                ids.append(friend.id)
+                friends.append(friend)
+
+        if identifier not in ids:
+            print('Este ID não existe\n')
+            return
+            
+        with open('list.csv', 'w+') as file:
+            file.write('ID, NOME, CPF\n')
+            for friend in friends:
+                if friend.id != identifier:
+                    file.write(f'{friend.to_csv()}\n')
+            print('Convidado removido!\n')
+    else:
+        print('Não existe arquivo\n')
 
 if __name__ == '__main__':
 
