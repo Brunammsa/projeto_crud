@@ -2,7 +2,7 @@ from classes.Friend import Friend
 from typing import Optional
 from pathlib import Path
 
-class ListRepository:
+class FriendRepository:
     def __init__(self: object):
         self.__file = Path("list.csv")
         self.__friends = []

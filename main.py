@@ -1,6 +1,6 @@
 from classes.Friend import Friend
 from pathlib import Path
-from classes.leitura_tratamento import ListRepository
+from classes.friend_repository import FriendRepository
 import csv
 
 relative_path = Path("list.csv")
@@ -64,9 +64,9 @@ def add() -> None:
 def show() -> None:
 
     identifier: int = int(input('Por favor digite o identificador do convidado que você quera exibir: '))
-    list_repository: ListRepository = ListRepository()
+    friend_repository: FriendRepository = FriendRepository()
 
-    friend = list_repository.show(identifier)
+    friend = friend_repository.show(identifier)
 
     if friend is None:
         print('Não existe usuário com este ID')
@@ -76,18 +76,18 @@ def show() -> None:
 
 def list() -> None:
 
-    list_repository: ListRepository = ListRepository()
-    friends = list_repository.index()
+    friend_repository: FriendRepository = FriendRepository()
+    friends = friend_repository.index()
     
     for friend in friends:
         print(friend.to_csv())
 
 
 def update() -> None:
-    identifier: int = int(input('Por favor digite o identificador do convidado que você quera exibir: '))
-    list_repository: ListRepository = ListRepository()
+    identifier: int = int(input('Por favor digite o identificador do convidado que você quera atualizar: '))
+    friend_repository: FriendRepository = FriendRepository()
 
-    friend = list_repository.show(identifier)
+    friend = friend_repository.show(identifier)
 
     if friend is None:
         print('Não existe usuário com este ID\n')
@@ -95,16 +95,16 @@ def update() -> None:
         name: str = input('Informe o nome atualizado do convidado: ')
         cpf: str = input('Informe o CPF atualizado do convidado. (ex. 000.000.000-00): ')
 
-        list_repository.update(name, cpf, identifier)
+        friend_repository.update(name, cpf, identifier)
         print('Usuário atualizado')
 
 
 def remove() -> None:
 
     identifier: int = int(input('\nPor favor digite o identificador do convidado que você queira remover. '))
-    list_repository: ListRepository = ListRepository()
+    friend_repository: FriendRepository = FriendRepository()
 
-    removed = list_repository.remove(identifier)
+    removed = friend_repository.remove(identifier)
 
     if removed == False:
         print('Não existe usuário com este ID\n')
