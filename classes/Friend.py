@@ -1,3 +1,5 @@
+from validate_docbr import CPF
+
 class Friend:
 
     def __init__(self: object, name: str, cpf: str, id) -> None:
@@ -19,7 +21,8 @@ class Friend:
 
     @cpf.setter
     def cpf(self: object, cpf: str) -> None:
-        self.__cpf = cpf
+        mascara = CPF()
+        return mascara.mask(self.cpf)
 
     @property
     def id(self: object) -> int:
