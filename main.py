@@ -45,21 +45,12 @@ def add() -> None:
     name: str = input('Informe o nome do convidado: ')
     cpf: str = input('Informe o CPF do convidado. (ex. 000.000.000-00): ')
 
-    with open('last_inserted_id.txt', 'r+') as file_read:
-        for line in file_read:
-            number_last_id = line
+    friend_repository: FriendRepository = FriendRepository()
 
-    friend: Friend = Friend(name, cpf, int(number_last_id) + 1)
-
-    with open('list.csv', 'a') as file:
-        file.write(friend.to_csv())
-        file.write('\n')
-
-    with open('last_inserted_id.txt', 'w+') as file_id:
-        file_id.write(str(friend.id))
-
-    print(f'\nO convidado(a) {friend.name} com adicionado(a) com sucesso!\n')
-
+    if friend_repository.store(name, cpf):
+        print(f'\nO convidado(a) {name} com adicionado(a) com sucesso!\n')
+        return
+    print('Não foi possível inserir')
 
 def show() -> None:
 

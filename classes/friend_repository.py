@@ -5,6 +5,23 @@ from pathlib import Path
 class FriendRepository:
     def __init__(self: object):
         self.__file = Path("list.csv")
+        self.__file_id = Path('last_inserted_id.txt')
+
+
+    def store(self, name: str, cpf: str) -> bool:
+
+        with open(self.__file_id, 'r+') as file_read:
+            for line in file_read:
+                number_last_id = line
+
+        friend: Friend = Friend(name, cpf, int(number_last_id) + 1)
+
+        with open('list.csv', 'a') as file:
+            file.write(friend.to_csv())
+            file.write('\n')
+
+        with open(self.__file_id, 'w+') as file_id:
+            file_id.write(str(friend.id))
 
 
     def show(self, id: int) -> Optional[Friend]:
