@@ -36,7 +36,7 @@ class FriendRepository:
             return list_friends
 
 
-    def update(self, id: int) -> bool:
+    def update(self, friend: Friend) -> bool:
         list_friends = []
         list_ids = []
 
@@ -46,22 +46,22 @@ class FriendRepository:
                 line_striped = line.strip()
                 line_splited = line_striped.split(',')
                 
-                friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
-                list_friends.append(friend)
-                list_ids.append(friend.id)
-        
-        if id not in list_ids:
+                temp_friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
+                list_friends.append(temp_friend)
+                list_ids.append(temp_friend.id)
+
+        if friend.id not in list_ids:
             return False
 
         with open(self.__file, 'w+') as file:
             file.write('ID, NOME, CPF\n')
             for temp_friend in list_friends:
-                if temp_friend.id == id:
+                print(temp_friend.id, friend.id)
+                if temp_friend.id == friend.id:
                     temp_friend.name = friend.name
                     temp_friend.cpf = friend.cpf
                 file.write(f'{temp_friend.to_csv()}\n')
         return True
-
 
     def remove(self, id: int) -> bool:
         list_friends = []

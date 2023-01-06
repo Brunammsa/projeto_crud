@@ -87,18 +87,22 @@ def update() -> None:
     identifier: int = int(input('Por favor digite o identificador do convidado que você quera atualizar: '))
     friend_repository: FriendRepository = FriendRepository()
 
-    updated = friend_repository.update(identifier)
+    friend = friend_repository.show(identifier)
 
-    if updated == False:
+    if friend is None:
         print('Não existe usuário com este ID\n')
     else:
         name: str = input('Informe o nome atualizado do convidado: ')
         cpf: str = input('Informe o CPF atualizado do convidado. (ex. 000.000.000-00): ')
-
-        Friend.name = name
-        Friend.cpf = cpf
-
-        print('Usuário atualizado')
+        
+        friend.name = name
+        friend.cpf = cpf
+        updated = friend_repository.update(friend)
+        
+        if updated == True:
+            print('Usuário atualizado')
+        else:
+            print('Não foi possível atualizar o usuário')
 
 
 def remove() -> None:
