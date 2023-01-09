@@ -25,6 +25,10 @@ class Friend:
     def cpf(self: object, cpf: str) -> None:
         self.__cpf = cpf
 
+
+    def cpf_without_mask(self: object) -> str:
+        return self.__cpf
+
     @property
     def id(self: object) -> int:
         return self.__id

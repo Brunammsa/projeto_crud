@@ -73,10 +73,9 @@ class FriendRepository:
         with open(self.__file, 'w+') as file:
             file.write('ID, NOME, CPF\n')
             for temp_friend in list_friends:
-                print(temp_friend.id, friend.id)
                 if temp_friend.id == friend.id:
                     temp_friend.name = friend.name
-                    temp_friend.cpf = friend.cpf
+                    temp_friend.cpf = friend.cpf_without_mask()
                 file.write(f'{temp_friend.to_csv()}\n')
         return True
 
