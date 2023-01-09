@@ -6,10 +6,18 @@ class FriendRepository:
     def __init__(self: object):
         self.__file = Path("list.csv")
         self.__file_id = Path('last_inserted_id.txt')
+        self.__initialize_file()
 
+    def __initialize_file(self) -> None:
+        if not self.__file.is_file():
+            with open(self.__file, 'w') as file:
+                file.write('ID, NOME, CPF\n')
 
+        if not self.__file_id.is_file():
+            with open(self.__file_id, 'w') as file:
+                file.write('0')
+                
     def store(self, name: str, cpf: str) -> bool:
-
         with open(self.__file_id, 'r+') as file_read:
             for line in file_read:
                 number_last_id = line

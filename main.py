@@ -5,8 +5,6 @@ from validate_docbr import CPF
 import csv
 
 
-relative_path = Path("list.csv")
-
 def main() -> None:
     print('~~~~~~~~~~~~~~ Bem vindo(a) a NOX ~~~~~~~~~~~~~')
     print('~~~~~~~~~~~~~~~~~~ LISTA VIP ~~~~~~~~~~~~~~~~~~\n\n')
@@ -62,8 +60,6 @@ def add() -> None:
 def show() -> None:
 
     friend_repository: FriendRepository = FriendRepository()
-
-    friend = friend_repository.show(identifier)
     
     option = False
     while option != True:
@@ -73,6 +69,7 @@ def show() -> None:
             if friend is None:
                 print('Não existe usuário com este ID')
             else:
+                friend = friend_repository.show(identifier)
                 print(friend)
             return True
         print('CPF ou nome inválido')
@@ -90,12 +87,12 @@ def list() -> None:
 def update() -> None:
     friend_repository: FriendRepository = FriendRepository()
 
-    friend = friend_repository.show(identifier)
 
     option = False
     while option != True:
         identifier: int = int(input('Por favor digite o identificador do convidado que você quera atualizar: '))
-        
+        friend = friend_repository.show(identifier)
+
         if identifier == int:
             if friend is None:
                 print('Não existe usuário com este ID\n')
@@ -123,7 +120,7 @@ def remove() -> None:
     option = False
 
     while option != True:
-        identifier: int = int(input('\nPor favor digite o identificador do convidado que você queira remover. '))
+        identifier: int = int(input('\nPor favor digite o identificador do convidado que você queira remover: '))
         
         if identifier == int:
             if removed == False:
