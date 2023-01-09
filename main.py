@@ -44,18 +44,19 @@ def add() -> None:
     print('Adicionar nome a lista')
     print('~~~~~~~~~~~~~~~~~~~~~~\n')
 
-    name: str = input('Informe o nome do convidado: ')
-    cpf: int = input('Informe o CPF do convidado. (ex. 000.000.000-00): ')
-
     friend_repository: FriendRepository = FriendRepository()
     validacao = CPF()
 
-    while False:
-        if validacao.validate(cpf) and len(name) > 0 and name == str:
+    option = False
+    while option != True:
+        name: str = input('Informe o nome do convidado: ')
+        cpf: int = input('Informe o CPF do convidado.')
+
+        if validacao.validate(cpf) and len(name) > 0:
             if friend_repository.store(name, cpf):
                 print(f'\nO convidado(a) {name} com adicionado(a) com sucesso!\n')
             return True
-    print('CPF ou nome inválido')
+        print('CPF ou nome inválido')
 
 
 def show() -> None:
@@ -68,7 +69,7 @@ def show() -> None:
     if friend is None:
         print('Não existe usuário com este ID')
     else:
-        print(friend.to_csv())
+        print(friend)
 
 
 def list() -> None:
@@ -77,7 +78,7 @@ def list() -> None:
     friends = friend_repository.index()
     
     for friend in friends:
-        print(friend.to_csv())
+        print(friend)
 
 
 def update() -> None:

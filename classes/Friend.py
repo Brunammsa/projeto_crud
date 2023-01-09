@@ -17,12 +17,13 @@ class Friend:
 
     @property
     def cpf(self: object) -> str:
-        return self.__cpf
+        mascara = CPF()
+        cpf_masked = mascara.mask(self.__cpf)
+        return cpf_masked
 
     @cpf.setter
     def cpf(self: object, cpf: str) -> None:
-        mascara = CPF()
-        return mascara.mask(self.cpf)
+        self.__cpf = cpf
 
     @property
     def id(self: object) -> int:
@@ -32,4 +33,6 @@ class Friend:
         return f'{self.__id}, {self.__name}, {self.__cpf}'
 
     def __str__(self) -> str:
-        return self.name, self.cpf, self.id
+        return """
+        ID: {}, Name: {}, CPF: {}
+        """.format(self.id, self.name, self.cpf)
