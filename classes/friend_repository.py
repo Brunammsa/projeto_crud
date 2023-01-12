@@ -2,9 +2,10 @@ from classes.Friend import Friend
 from typing import Optional
 from pathlib import Path
 
+
 class FriendRepository:
     def __init__(self: object):
-        self.__file = Path("list.csv")
+        self.__file = Path('list.csv')
         self.__file_id = Path('last_inserted_id.txt')
         self.__initialize_file()
 
@@ -16,7 +17,7 @@ class FriendRepository:
         if not self.__file_id.is_file():
             with open(self.__file_id, 'w') as file:
                 file.write('0')
-                
+
     def store(self, name: str, cpf: str) -> bool:
         with open(self.__file_id, 'r+') as file_read:
             for line in file_read:
@@ -31,20 +32,20 @@ class FriendRepository:
         with open(self.__file_id, 'w+') as file_id:
             file_id.write(str(friend.id))
 
-
     def show(self, id: int) -> Optional[Friend]:
         with open(self.__file, 'r') as file:
             friends_lists = file.readlines()
             for line in friends_lists[1:]:
                 line_striped = line.strip()
                 line_splited = line_striped.split(',')
-                
-                friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
+
+                friend: Friend = Friend(
+                    line_splited[1], line_splited[2], int(line_splited[0])
+                )
 
                 if friend.id == id:
                     return friend
             return None
-    
 
     def index(self) -> list[Friend]:
         list_friends = []
@@ -54,12 +55,13 @@ class FriendRepository:
             for line in friends_lists[1:]:
                 line_striped = line.strip()
                 line_splited = line_striped.split(',')
-                
-                friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
+
+                friend: Friend = Friend(
+                    line_splited[1], line_splited[2], int(line_splited[0])
+                )
                 list_friends.append(friend)
 
             return list_friends
-
 
     def update(self, friend: Friend) -> bool:
         list_friends = []
@@ -70,8 +72,10 @@ class FriendRepository:
             for line in friends_lists[1:]:
                 line_striped = line.strip()
                 line_splited = line_striped.split(',')
-                
-                temp_friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
+
+                temp_friend: Friend = Friend(
+                    line_splited[1], line_splited[2], int(line_splited[0])
+                )
                 list_friends.append(temp_friend)
                 list_ids.append(temp_friend.id)
 
@@ -96,14 +100,16 @@ class FriendRepository:
             for line in friends_lists[1:]:
                 line_striped = line.strip()
                 line_splited = line_striped.split(',')
-                
-                friend: Friend = Friend(line_splited[1], line_splited[2], int(line_splited[0]))
+
+                friend: Friend = Friend(
+                    line_splited[1], line_splited[2], int(line_splited[0])
+                )
                 list_friends.append(friend)
                 list_ids.append(friend.id)
-        
+
         if id not in list_ids:
             return False
-        
+
         with open(self.__file, 'w+') as file:
             file.write('ID, NOME, CPF\n')
             for friend in list_friends:

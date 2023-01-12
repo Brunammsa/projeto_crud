@@ -1,12 +1,12 @@
 from validate_docbr import CPF
 
-class Friend:
 
+class Friend:
     def __init__(self: object, name: str, cpf: str, id) -> None:
         self.__name: str = name.strip()
         self.__cpf: str = cpf.strip()
         self.__id: int = int(id)
-    
+
     @property
     def name(self: object) -> str:
         return self.__name
@@ -25,7 +25,6 @@ class Friend:
     def cpf(self: object, cpf: str) -> None:
         self.__cpf = cpf
 
-
     def cpf_without_mask(self: object) -> str:
         return self.__cpf
 
@@ -39,4 +38,6 @@ class Friend:
     def __str__(self) -> str:
         return """
         ID: {}, Name: {}, CPF: {}
-        """.format(self.id, self.name, self.cpf)
+        """.format(
+            self.id, self.name, self.cpf
+        )
