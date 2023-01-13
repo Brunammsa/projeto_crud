@@ -80,7 +80,7 @@ def show() -> None:
             print('Não existe usuário com este ID')
         else:
             print(f'{friend}\n')
-        option = True
+            option = True
 
 
 def list() -> None:
@@ -94,6 +94,7 @@ def list() -> None:
 
 def update() -> None:
     friend_repository: FriendRepository = FriendRepository()
+    validacao = CPF()
     option = False
 
     while option != True:
@@ -116,7 +117,9 @@ def update() -> None:
         if validacao.validate(cpf) == False:
             print('CPF inválido')
             continue
-
+        
+        friend.name = name
+        friend.cpf = cpf
         updated = friend_repository.update(friend)
         if updated == True:
             print('Usuário atualizado\n')
