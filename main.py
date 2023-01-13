@@ -78,7 +78,6 @@ def show() -> None:
         print('Não existe usuário com este ID')
     else:
         print(f'{friend}\n')
-        option = True
 
 
 def list() -> None:
@@ -142,7 +141,6 @@ def remove() -> None:
         print('Não existe usuário com este ID')
     else:
         print('Usuário removido\n')
-        option = True
 
 
 if __name__ == '__main__':
