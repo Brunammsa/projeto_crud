@@ -9,6 +9,9 @@ class FriendRepository:
         self.__file_id = Path('last_inserted_id.txt')
         self.__initialize_file()
 
+"""
+criando e inicializando arquivo com cabeçalho
+"""
     def __initialize_file(self) -> None:
         if not self.__file.is_file():
             with open(self.__file, 'w') as file:
@@ -18,6 +21,11 @@ class FriendRepository:
             with open(self.__file_id, 'w') as file:
                 file.write('0')
 
+"""
+primeiro, lendo o último id inserido para escrever o proxímo na lista
+segundo, recebendo nome e cpf da função add() e escrevendo já formatado instanciado da classe Friend
+terceiro, lendo a lista para pegar o último id inserido e substituir o que estava
+"""
     def store(self, name: str, cpf: str) -> bool:
         with open(self.__file_id, 'r+') as file_read:
             for line in file_read:
@@ -32,6 +40,12 @@ class FriendRepository:
         with open(self.__file_id, 'w+') as file_id:
             file_id.write(str(friend.id))
 
+
+"""
+recebe um id da função show()
+percorre a lista friend até achar a primeira posição igual ao id
+achando, retorna a linha.
+"""
     def show(self, id: int) -> Optional[Friend]:
         with open(self.__file, 'r') as file:
             friends_lists = file.readlines()
@@ -47,6 +61,11 @@ class FriendRepository:
                     return friend
             return None
 
+"""
+lendo a lista a lista de friends
+retirando os espaços em branco, splitando as palavras
+e printando cada linha
+"""
     def index(self) -> list[Friend]:
         list_friends = []
 
@@ -62,7 +81,12 @@ class FriendRepository:
                 list_friends.append(friend)
 
             return list_friends
-
+"""
+recebendo como parâmetro a classe friend
+retirando os espaços em branco, splitando as palavras
+atualizando id, nome e cpf
+abrindo para escrita a lista e atualizando a lista com a linha atualizada
+"""
     def update(self, friend: Friend) -> bool:
         list_friends = []
         list_ids = []
@@ -90,7 +114,11 @@ class FriendRepository:
                     temp_friend.cpf = friend.cpf_without_mask()
                 file.write(f'{temp_friend.to_csv()}\n')
         return True
-
+"""
+recebendo como parâmetro id
+retirando os espaços em branco, splitando as palavras
+abrindo para escrita a lista, percorrendo a lista a procura do id selecionado e atualizando a lista sem ele
+"""
     def remove(self, id: int) -> bool:
         list_friends = []
         list_ids = []
